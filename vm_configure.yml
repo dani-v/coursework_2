@@ -24,7 +24,7 @@
     command: pip install ansible[azure]
 
   - stat:
-      path: /home/azureuser/docker_node.sh
+    path: /home/azureuser/docker_node.sh
     register: result
 
   - name: Copy docker_node.sh to Node
@@ -38,3 +38,5 @@
 
   - name: Run Docker installation script
     command: sudo /home/azureuser/docker_node.sh
+
+  
