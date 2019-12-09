@@ -23,21 +23,23 @@ pipeline {
         
         stage('Quality Gate'){
             steps {
-               timeout(time: 5, unit: 'MINUTES') {
+               timeout(time: 15, unit: 'MINUTES') {
                waitForQualityGate abortPipeline: true
                }
             }
         }
         
-        stage("Build Docker Image") {
+        stage('Build & Push Docker Image') {
             steps {
                 script {
-                    def app
-                    app = docker.build("dani-v/coursework_2")
+                    def app = docker.build("dani-v/coursework_2")
+                    docker.withRegistry("https://registry.hub.docker.com", "docker_credentials") {
+                    app.push("${env.BUILD_NUMBER}")
+                    app.push("latest")
                 }
             }
+          }
         }
 
-        
     }
 }
