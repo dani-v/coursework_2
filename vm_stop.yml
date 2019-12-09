@@ -1,0 +1,14 @@
+- name: Stop Azure VM
+  hosts: localhost
+  connection: local
+
+  vars:
+    myResourceGroup: ansible
+    myVM: ansible-node
+
+  tasks:
+    - name: Stop virtual machine
+      azure_rm_virtualmachine:
+        resource_group: "{{ myResourceGroup }}"
+        name: "{{ myVM }}"
+        allocated: no
