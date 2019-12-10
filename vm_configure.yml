@@ -38,3 +38,5 @@
 
     - name: Run Docker installation script
       command: sudo /home/azureuser/docker_node.sh
+
+
