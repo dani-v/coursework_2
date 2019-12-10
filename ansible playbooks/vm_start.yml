@@ -1,0 +1,12 @@
+- name: Start Azure VM
+  hosts: localhost
+
+  vars:
+    myResourceGroup: ansible
+    myVM: ansible-node
+
+  tasks:
+    - name: Start virtual machine
+      azure_rm_virtualmachine:
+        resource_group: "{{ myResourceGroup }}"
+        name: "{{ myVM }}"

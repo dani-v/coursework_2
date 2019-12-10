@@ -1,0 +1,13 @@
+- name: restart Azure VM
+  hosts: localhost
+
+  vars:
+    myResourceGroup: ansible
+    myVM: ansible-node
+
+  tasks:
+    - name: Restart virtual machine
+      azure_rm_virtualmachine:
+        resource_group: "{{ myResourceGroup }}"
+        name: "{{ myVM }}"
+        restarted: yes
