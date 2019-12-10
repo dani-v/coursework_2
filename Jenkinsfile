@@ -3,7 +3,13 @@ pipeline {
    agent any
 
     stages {
+        stage('Build') { 
+            steps {
+                 git branch: 'daniela_branch', url: 'https://github.com/dani-v/coursework_2/'
+            }
+        }
         stage('Checkout SCM'){
+            
             steps {
                 checkout([$class: 'GitSCM', branches: [[name: '*/daniela_branch']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/dani-v/coursework_2.git']]])
             }
