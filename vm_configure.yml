@@ -9,76 +9,32 @@
 
   tasks:
 
-  - name: Install Various Packages
-    apt:
-      update_cache: yes
-      name: "{{ packages }}"
-    vars:
-      packages:
-      - libssl-dev
-      - libffi-dev
-      - python-dev
-      - python-pip
+    - name: Install Various Packages
+      apt:
+        update_cache: yes
+        name: "{{ packages }}"
+      vars:
+        packages:
+        - libssl-dev
+        - libffi-dev
+        - python-dev
+        - python-pip
 
-  - name: Install Ansible for Azure
-    command: pip install ansible[azure]
+    - name: Install Ansible for Azure
+      command: pip install ansible[azure]
 
-  - stat:
-    path: /home/azureuser/docker_node.sh
-    register: result
+    - stat:
+      path: /home/azureuser/docker_node.sh
+      register: result
 
-  - name: Copy docker_node.sh to Node
-    copy:
-      src: ./docker_node.sh
-      dest: /home/azureuser/docker_node.sh
-    when: result.stat.exists == false
+    - name: Copy docker_node.sh to Node
+      copy:
+        src: ./docker_node.sh
+        dest: /home/azureuser/docker_node.sh
+      when: result.stat.exists == false
 
-  - name: Set docker.sh permissions
-    command: chmod +x /home/azureuser/docker_node.sh
+    - name: Set docker.sh permissions
+      command: chmod +x /home/azureuser/docker_node.sh
 
-  - name: Run Docker installation script
-    command: sudo /home/azureuser/docker_node.sh
-
-  - name: Add support for https apt sources from packages
-    shell: sudo apt-get update && sudo apt-get install -y apt-transport-https
-
-  - name: Add apt-key
-    shell: curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
-    
-  - name: Add Kubernetes sources
-    shell: echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
-
-  - name: Install kubectl
-    apt:
-    name: kubectl
-    update_cache: yes
-
-  - stat:
-    path: /usr/local/bin/minikube
-    register: minikube_stat
-
-  - name: Download minikube binary
-    command: sudo curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
-    when: minikube_stat.stat.exists == false
-
-  - name: Add executable status to minikube binary
-    file:
-    path: ./minikube
-    mode: "777"
-    when: minikube_stat.stat.exists == false
-
-  - name: Install minikube
-    command: mv minikube /usr/local/bin
-    when: minikube_stat.stat.exists == false
-
-  - name: Start minikube
-    command: sudo minikube start --vm-driver=none
-
-  - name: Create Kubernetes deployment
-    command: sudo kubectl create deployment coursework-2 --image=danielavasileva/coursework_2:latest
-
-  - name: Create Kubernetes service
-    command: sudo kubectl expose deployment/coursework-2 --type="NodePort" --port 8000 --name node-port-service
-
-  - name: Scale deployment to 4 nodes
-    command: sudo kubectl scale deployment/coursework-2 --replicas=4    
+    - name: Run Docker installation script
+      command: sudo /home/azureuser/docker_node.sh
