@@ -4,7 +4,7 @@
 
   vars:
     myResourceGroup: ansible
-    myVM: ansible-node
+    myVM: kubernetes-node
 
   tasks:
 

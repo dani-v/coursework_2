@@ -1,17 +1,16 @@
-
 - name: Create Azure VM
   hosts: localhost
   connection: local
 
   vars:
     myResourceGroup: ansible
-    myVnet: ansible-node-vnet
-    mySubnet: ansible-node-subnet
-    myPublicIP: ansible-node-publicip
-    myNIC: ansible-node-nic
-    myNetworkSecurityGroup: ansible-node-nsg
-    myVM: ansible-node
-    mySSHkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDjZnXN3AhswbhJ3OUDeOJ4gb0mdrfxd1XD6ODgUoN6WAZHZsbX0g4IVwzagvIwEdqpi7Ndc0UMZua0AB01SNjMj9bzBOIRqJVRlueb0vpSNsqna3sN65j0pyOjvbGwHqI174Fk9eH3GbIasCs80c75ehQcGls0laG9x/Iemx8nS6mUdIcvti3NkFe8AaDr96CH7VDA9wO60ziIsgYEEZBBlCJU2I4YVF/88+YBGQXBrJpd4rY1pNJqoL2F/CpFVL1VIEXT7f0FVGtAHYDdS53lu9jdcii1Inp7Bvcnb21w+7R8B1N12ypNX40WocAfqX6v4RnxBUUX8j55BN6wz/Yb master@master
+    myVnet: kubernetes-node-vnet
+    mySubnet: kubernetes-node-subnet
+    myPublicIP: kubernetes-node-publicip
+    myNIC: kubernetes-node-nic
+    myNetworkSecurityGroup: kubernetes-node-nsg
+    myVM: kubernetes-node
+    mySSHkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCnlT/btLqT7/v0poIda7XqnIOi+0SGOlBbfuJfT7JY2KY3JkC4nbbxT8GzrXnEAV8LnZgtha17IVOiSxPQHynYWjc1YrWSeIRHXcnIuUq5HI+f16NhsQ3m/MFKMoVMvTx8weGp/Jn8H9cxpiUsIzVl4+3pmug7k9xoo1BRN3vOgz7rYfjLjPL1Hx7E/pAVABQlhY3AwagcP9u7EQdkzL2H7QmEpPT0rGLuDl543yHGYnTc84zKB8AUN46S2315X5/9ZSxyfbFCkKamcohNma/ikgjFz9eoMeXw1oJ4uriLOPr+TVUMmV0qsn5rEagpeBmjW9PQuVR0Cn2G478VIKPp master@master
 
   tasks:
 
@@ -47,9 +46,9 @@
           priority: 1001
           direction: Inbound
 
-        - name: Port8080
+        - name: ServerJS
           protocol: Tcp
-          destination_port_range: 22
+          destination_port_range: 8080
           access: Allow
           priority: 1002
           direction: Inbound
@@ -67,7 +66,7 @@
     azure_rm_virtualmachine:
       resource_group: "{{ myResourceGroup }}"
       name: "{{ myVM }}"
-      vm_size: Standard_DS1_v2
+      vm_size: Standard_D2_v3
       admin_username: azureuser
       ssh_password_enabled: false
       ssh_public_keys:
@@ -77,7 +76,7 @@
       image:
         offer: UbuntuServer
         publisher: Canonical
-        sku: '16.04-LTS'
+        sku: '18.04-LTS'
         version: latest
 
   - name: Print Public IP for VM which will be created
