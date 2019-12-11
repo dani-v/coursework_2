@@ -7,7 +7,7 @@
       command: sudo kubectl run coursework-2 --image=gcr.io/danielavasileva/coursework_2:latest
 
     - name: Create Kubernetes service
-      command: sudo kubectl expose deployment/coursework-2 --type="NodePort" --port 8080 --name node-port-service
+      command: sudo kubectl expose danielavasileva/coursework_2 --type="NodePort" --port 8080 --name node-port-service
 
     - name: Scale deployment to 4 nodes
-      command: sudo kubectl scale deployment/coursework-2 --replicas=4
+      command: sudo kubectl scale danielavasileva/coursework_2 --replicas=4
